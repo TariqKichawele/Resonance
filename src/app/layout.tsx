@@ -1,5 +1,13 @@
 import type { Metadata } from "next";
 import { Inter, Geist_Mono } from "next/font/google";
+import {
+  ClerkProvider,
+  Show,
+  SignInButton,
+  SignUpButton,
+  UserButton,
+} from "@clerk/nextjs";
+import { shadcn } from "@clerk/ui/themes";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -28,8 +36,19 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
-        <Toaster />
+        <ClerkProvider appearance={{ theme: shadcn }} dynamic>
+          <header className="flex h-14 items-center justify-end gap-2 border-b border-border px-4">
+            <Show when="signed-out">
+              <SignInButton />
+              <SignUpButton />
+            </Show>
+            <Show when="signed-in">
+              <UserButton />
+            </Show>
+          </header>
+          {children}
+          <Toaster />
+        </ClerkProvider>
       </body>
     </html>
   );
