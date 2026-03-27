@@ -37,15 +37,6 @@ export default function RootLayout({
         className={`${inter.variable} ${geistMono.variable} antialiased`}
       >
         <ClerkProvider appearance={{ theme: shadcn }} dynamic>
-          <header className="flex h-14 items-center justify-end gap-2 border-b border-border px-4">
-            <Show when="signed-out">
-              <SignInButton />
-              <SignUpButton />
-            </Show>
-            <Show when="signed-in">
-              <UserButton />
-            </Show>
-          </header>
           {children}
           <Toaster />
         </ClerkProvider>
