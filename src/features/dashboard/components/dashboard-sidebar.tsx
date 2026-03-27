@@ -136,7 +136,6 @@ export function DashboardSidebar() {
 
   return (
     <>
-    Voice Create Dialog
     <Sidebar collapsible="icon">
       <SidebarHeader className="flex flex-col gap-4 pt-4">
         <div 
