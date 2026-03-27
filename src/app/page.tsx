@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
 
 export default function Home() {
