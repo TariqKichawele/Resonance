@@ -10,6 +10,7 @@ import {
 import { shadcn } from "@clerk/ui/themes";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { TRPCReactProvider } from "@/trpc/client";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -24,7 +25,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: {
     default: "Resonance",
-    template: "%s | Resonance"
+    template: "%s | Resonance",
   },
   description: "AI-powered text-to-speech and voice cloning platform",
 };
@@ -35,15 +36,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${inter.variable} ${geistMono.variable} antialiased`}
-      >
-        <ClerkProvider appearance={{ theme: shadcn }} dynamic>
-          {children}
-          <Toaster />
-        </ClerkProvider>
-      </body>
-    </html>
+    <ClerkProvider>
+      <TRPCReactProvider>
+        <html lang="en">
+          <body
+            className={`${inter.variable} ${geistMono.variable} antialiased`}
+          >
+            {children}
+            <Toaster />
+          </body>
+        </html>
+      </TRPCReactProvider>
+    </ClerkProvider>
   );
 }
