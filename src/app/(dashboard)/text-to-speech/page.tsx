@@ -1,12 +1,20 @@
 import TextToSpeechView from '@/features/text-to-speech/views/text-to-speech-view';
 import { Metadata } from 'next'
-import React from 'react'
+import { trpc, HydrateClient, prefetch } from '@/trpc/server';
 
 export const metadata: Metadata = { title: "Text to Speech" };
 
-const TextToSpeech = () => {
+const TextToSpeech = async ({ 
+  searchParams 
+}: { 
+    searchParams: Promise<{ text?: string; voiceId?: string }> 
+}) => {
+  const { text, voiceId } = await searchParams;
+  prefetch(trpc.voices.getAll.queryOptions());
   return (
-    <TextToSpeechView />
+  <HydrateClient>
+    <TextToSpeechView initialValues={{ text, voiceId }} />
+  </HydrateClient>
   )
 }
 
