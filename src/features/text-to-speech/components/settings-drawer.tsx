@@ -1,5 +1,4 @@
 import { Settings } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
@@ -8,7 +7,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-
+import { SettingsPanelSettings } from "./settings-panel-settings";
 
 interface SettingsDrawerProps {
   open?: boolean;
@@ -35,7 +34,7 @@ export function SettingsDrawer({
           <DrawerTitle>Settings</DrawerTitle>
         </DrawerHeader>
         <div className="overflow-y-auto">
-          {/* <SettingsPanelSettings /> */}
+          <SettingsPanelSettings /> 
         </div>
       </DrawerContent>
     </Drawer>

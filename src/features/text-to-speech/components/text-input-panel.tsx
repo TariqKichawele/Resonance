@@ -15,16 +15,14 @@ import { PromptSuggestions } from "./prompt-suggestions";
 import { useTypedAppFormContext } from "@/hooks/use-app-form";
 import { ttsFormOptions } from "./text-to-speech-form";
 import { useStore } from "@tanstack/react-form";
+import { VoiceSelectorButton } from "./voice-selector-button";
 
 const TextInputPanel = () => {
   const form = useTypedAppFormContext(ttsFormOptions);
+
   const text = useStore(form.store, (s) => s.values.text);
   const isSubmitting = useStore(form.store, (s) => s.isSubmitting);
   const isValid = useStore(form.store, (s) => s.isValid);
-
-  const handleSubmit = () => {
-    console.log("Heyy");
-  };
 
   return (
     <div className="flex h-full min-h-o flex-col flex-1">
@@ -46,7 +44,9 @@ const TextInputPanel = () => {
       <div className="shrink-0 p-4 lg:p-6">
         <div className="flex flex-col gap-3 lg:hidden">
           <div className="flex items-center gap-2">
-            <SettingsDrawer>{/* <VoiceSelectorButton /> */}</SettingsDrawer>
+            <SettingsDrawer>
+              <VoiceSelectorButton />
+            </SettingsDrawer>
             <HistoryDrawer />
           </div>
           <GenerateButton
