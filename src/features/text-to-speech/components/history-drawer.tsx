@@ -8,6 +8,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import { SettingsPanelHistory } from "./settings-panel-history";
 
 
 export function HistoryDrawer() {
@@ -23,7 +24,7 @@ export function HistoryDrawer() {
           <DrawerTitle>History</DrawerTitle>
         </DrawerHeader>
         <div className="overflow-y-auto">
-          {/* <SettingsPanelHistory /> */}
+          <SettingsPanelHistory /> 
         </div>
       </DrawerContent>
     </Drawer>
