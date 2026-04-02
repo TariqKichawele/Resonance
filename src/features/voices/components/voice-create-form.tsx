@@ -30,7 +30,7 @@ import { useTRPC } from "@/trpc/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Field, FieldError } from "@/components/ui/field";
+import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { 
   Tabs, 
   TabsList, 
@@ -124,21 +124,23 @@ function FileDropzone({
           type="button"
           variant="ghost"
           size="icon-sm"
+          aria-label={isPlaying ? "Pause preview" : "Play preview"}
           onClick={togglePlay}
         >
           {isPlaying ? (
-            <Pause className="size-4" />
+            <Pause className="size-4" aria-hidden />
           ) : (
-            <Play className="size-4" />
+            <Play className="size-4" aria-hidden />
           )}
         </Button>
         <Button
           type="button"
           variant="ghost"
           size="icon-sm"
+          aria-label="Remove file"
           onClick={() => onFileChange(null)}
         >
-          <X className="size-4" />
+          <X className="size-4" aria-hidden />
         </Button>
       </div>
     );
@@ -403,9 +405,12 @@ export function VoiceCreateForm({
 
             return (
               <Field data-invalid={isInvalid}>
+                <FieldLabel htmlFor={field.name} className="sr-only">
+                  Voice label
+                </FieldLabel>
                 <div className="relative flex items-center">
                   <div className="pointer-events-none absolute left-0 flex h-full w-11 items-center justify-center">
-                    <Tag className="size-4 text-muted-foreground" />
+                    <Tag className="size-4 text-muted-foreground" aria-hidden />
                   </div>
                   <Input
                     id={field.name}
@@ -483,9 +488,12 @@ export function VoiceCreateForm({
 
             return (
               <Field data-invalid={isInvalid}>
+                <FieldLabel htmlFor={field.name} className="sr-only">
+                  Voice description
+                </FieldLabel>
                 <div className="relative flex items-center">
                   <div className="pointer-events-none absolute left-0 flex h-full w-11 items-center justify-center">
-                    <AlignLeft className="size-4 text-muted-foreground" />
+                    <AlignLeft className="size-4 text-muted-foreground" aria-hidden />
                   </div>
                   <Textarea
                     id={field.name}

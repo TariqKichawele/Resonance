@@ -2,6 +2,8 @@ import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/db";
 import { getSignedAudioUrl } from "@/lib/r2";
 
+const FETCH_VOICE_AUDIO_TIMEOUT_MS = 30_000;
+
 export async function GET(
   _request: Request,
   { params }: { params: Promise<{ voiceId: string }> },
@@ -35,11 +37,46 @@ export async function GET(
     return new Response("Voice audio is not available yet", { status: 409 });
   }
 
-  const signedUrl = await getSignedAudioUrl(voice.r2ObjectKey);
-  const audioResponse = await fetch(signedUrl);
+  let signedUrl: string;
+  try {
+    signedUrl = await getSignedAudioUrl(voice.r2ObjectKey);
+  } catch (cause) {
+    const detail =
+      cause instanceof Error ? cause.message : String(cause);
+    return new Response(
+      `Failed to generate signed URL: ${detail}`,
+      { status: 502 },
+    );
+  }
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(
+    () => controller.abort(),
+    FETCH_VOICE_AUDIO_TIMEOUT_MS,
+  );
+
+  let audioResponse: Response;
+  try {
+    audioResponse = await fetch(signedUrl, { signal: controller.signal });
+  } catch {
+    clearTimeout(timeoutId);
+    if (controller.signal.aborted) {
+      return new Response(
+        "Timed out while fetching voice audio from storage",
+        { status: 504 },
+      );
+    }
+    return new Response("Failed to fetch voice audio from storage", {
+      status: 502,
+    });
+  }
+  clearTimeout(timeoutId);
 
   if (!audioResponse.ok) {
-    return new Response("Failed to fetch voice audio", { status: 502 });
+    return new Response(
+      `Failed to fetch voice audio: storage returned ${audioResponse.status}`,
+      { status: 502 },
+    );
   }
 
   const contentType = 
