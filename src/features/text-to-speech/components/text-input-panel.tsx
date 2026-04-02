@@ -1,10 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { Coins } from "lucide-react";
-
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 
 import { COST_PER_UNIT, TEXT_MAX_LENGTH } from "../data/constants";
@@ -25,7 +22,7 @@ const TextInputPanel = () => {
   const isValid = useStore(form.store, (s) => s.isValid);
 
   return (
-    <div className="flex h-full min-h-o flex-col flex-1">
+    <div className="flex h-full min-h-0 flex-col flex-1">
       <div className="relative min-h-0 flex-1">
         <form.Field name="text">
           {(field) => (
