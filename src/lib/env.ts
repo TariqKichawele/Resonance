@@ -11,6 +11,12 @@ export const env = createEnv({
         R2_BUCKET_NAME: z.string().min(1),
         CHATTERBOX_API_URL: z.url(),
         CHATTERBOX_API_KEY: z.string().min(1),
+        POLAR_ACCESS_TOKEN: z.string().min(1),
+        POLAR_SERVER: z.enum(["sandbox", "production"]).default("sandbox"),
+        POLAR_PRODUCT_ID: z.string().min(1),
+        POLAR_METER_VOICE_CREATION: z.string().min(1),
+        POLAR_METER_TTS_GENERATION: z.string().min(1),
+        POLAR_METER_TTS_PROPERTY: z.string().min(1),
     },
     client: {
         // NEXT_PUBLIC_CLIENTVAR: z.string().min(1),
