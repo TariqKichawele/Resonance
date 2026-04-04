@@ -1,5 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/db";
+import { proxyAudioFromUpstream } from "@/lib/proxy-audio-response";
 import { getSignedAudioUrl } from "@/lib/r2";
 
 const FETCH_VOICE_AUDIO_TIMEOUT_MS = 30_000;
@@ -79,16 +80,10 @@ export async function GET(
     );
   }
 
-  const contentType = 
-    audioResponse.headers.get("content-type") || "audio/wav";
+  const cacheControl =
+    voice.variant === "SYSTEM"
+      ? "public, max-age=86400"
+      : "private, max-age=3600";
 
-  return new Response(audioResponse.body, {
-    headers: {
-      "Content-Type": contentType,
-      "Cache-Control":
-        voice.variant === "SYSTEM"
-          ? "public, max-age=86400"
-          : "private, max-age=3600",
-    },
-  });
+  return proxyAudioFromUpstream(audioResponse, cacheControl);
 };

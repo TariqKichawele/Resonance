@@ -1,5 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/db";
+import { proxyAudioFromUpstream } from "@/lib/proxy-audio-response";
 import { getSignedAudioUrl } from "@/lib/r2";
 
 export async function GET(
@@ -33,10 +34,5 @@ export async function GET(
     return new Response("Failed to fetch audio", { status: 502 });
   }
 
-  return new Response(audioResponse.body, {
-    headers: {
-      "Content-Type": "audio/wav",
-      "Cache-Control": "private, max-age=3600",
-    },
-  });
+  return proxyAudioFromUpstream(audioResponse, "private, max-age=3600");
 }

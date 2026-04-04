@@ -22,24 +22,34 @@ export function useAudioPlayback(src: string | File | null) {
 
     if (!audioRef.current) {
       const url = src instanceof File ? URL.createObjectURL(src) : src;
-      audioRef.current = new Audio(url);
-      audioRef.current.addEventListener("ended", () => setIsPlaying(false));
-      audioRef.current.addEventListener(
+      const audio = new Audio(url);
+      audio.preload = "auto";
+      audioRef.current = audio;
+      audio.addEventListener("ended", () => setIsPlaying(false));
+      audio.addEventListener(
         "canplaythrough",
         () => setIsLoading(false),
         { once: true },
       );
     }
 
+    const audio = audioRef.current;
+
     if (isPlaying) {
-      audioRef.current.pause();
+      audio.pause();
       setIsPlaying(false);
     } else {
       setIsLoading(true);
-      audioRef.current.play().then(() => {
-        setIsPlaying(true);
-        setIsLoading(false);
-      });
+      void audio
+        .play()
+        .then(() => {
+          setIsPlaying(true);
+          setIsLoading(false);
+        })
+        .catch(() => {
+          setIsPlaying(false);
+          setIsLoading(false);
+        });
     }
   }, [src, isPlaying]);
 
