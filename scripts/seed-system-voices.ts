@@ -17,6 +17,7 @@ import {
 } from "../src/generated/prisma/client";
 
 import { CANONICAL_SYSTEM_VOICE_NAMES } from "../src/features/voices/data/voice-scoping";
+import { normalizePgConnectionString } from "../src/lib/pg-connection-string";
 
 const SYSTEM_VOICES_DIR = path.join(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -33,7 +34,9 @@ const envSchema = z.object({
 
 const env = envSchema.parse(process.env);
 
-const adapter = new PrismaPg({ connectionString: env.DATABASE_URL });
+const adapter = new PrismaPg({
+  connectionString: normalizePgConnectionString(env.DATABASE_URL),
+});
 const prisma = new PrismaClient({ adapter });
 
 const r2 = new S3Client({
