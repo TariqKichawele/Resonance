@@ -66,8 +66,8 @@ function NavSection({ label, items, pathname }: NavSectionProps) {
                 asChild={!!item.url}
                 isActive={
                   item.url
-                    ? item.url === "/"
-                      ? pathname === "/"
+                    ? item.url === "/dashboard"
+                      ? pathname === "/dashboard"
                       : pathname.startsWith(item.url)
                     : false
                 }
@@ -103,7 +103,7 @@ export function DashboardSidebar() {
   const mainMenuItems: MenuItem[] = [
     {
       title: "Dashboard",
-      url: "/",
+      url: "/dashboard",
       icon: Home,
     },
     {
@@ -144,18 +144,22 @@ export function DashboardSidebar() {
     />
     <Sidebar collapsible="icon">
       <SidebarHeader className="flex flex-col gap-4 pt-4">
-        <div 
-        className="flex items-center gap-2 pl-1 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:pl-0">
-          <Image
-            src="/logo.svg"
-            alt="Resonance"
-            width={24}
-            height={24}
-            className="rounded-sm"
-          />
-          <span className="group-data-[collapsible=icon]:hidden font-semibold text-lg tracking-tighter text-foreground">
-            Resonance
-          </span>
+        <div className="flex items-center gap-2 pl-1 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:pl-0">
+          <Link
+            href="/"
+            className="flex min-w-0 items-center gap-2 group-data-[collapsible=icon]:justify-center"
+          >
+            <Image
+              src="/logo.svg"
+              alt="Resonance"
+              width={24}
+              height={24}
+              className="rounded-sm"
+            />
+            <span className="group-data-[collapsible=icon]:hidden font-semibold text-lg tracking-tighter text-foreground">
+              Resonance
+            </span>
+          </Link>
           <SidebarTrigger className="ml-auto lg:hidden" />
         </div>
         <SidebarMenu>
